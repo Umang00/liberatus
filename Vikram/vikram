@@ -1,369 +1,137 @@
-# Landing Page Masterplan
-## Marketing Automation Showcase
-
----
-
-## 🎯 Overview & Objective
-
-**Purpose:**  
-Create a minimalist single-page landing page that showcases your marketing automation expertise to build credibility in the B2C marketing automation niche.
-
-**Core Message:**  
-"I help B2C brands save time and money through smart marketing automation."
-
-**Primary Goal:**  
-Establish yourself as a credible expert in B2C marketing automation, attracting opportunities through demonstrated expertise and results.
-
----
-
-## 👥 Target Audience
-
-**Who will visit this page:**
-- B2C marketing professionals looking for automation insights
-- Brand managers seeking efficiency solutions
-- Fellow automation specialists and potential collaborators
-- People researching B2C marketing automation best practices
-- Future clients or employers evaluating your expertise
-
-**What they're looking for:**
-- Proof that you deliver real time/cost savings
-- Clear examples of your automation work
-- Signs that you understand B2C marketing challenges
-- A sense of your expertise and approach
-
----
-
-## 📋 Page Structure & Sections
-
-Your landing page will flow in this order:
-
-### 1. **Hero Section** (Top of page)
-**Purpose:** Immediate impact and clarity
-
-**Content includes:**
-- Your name (large, prominent)
-- One-line headline: What you do and for whom
-  - Example: "Marketing Automation Specialist | Helping B2C Brands Save Time & Money"
-- Optional: Short subtitle (one sentence expanding on your value)
-- Call-to-action button: "View My Work" or "See Projects" (smooth scroll to projects)
-
-**Visual style:**
-- Clean, spacious design with plenty of white space
-- Strong, confident typography
-- Minimal decoration—let the words speak
-
----
-
-### 2. **About Me Section**
-**Purpose:** Quick credibility and connection
-
-**Content includes:**
-- Brief introduction (2-3 sentences max)
-- Your focus: B2C marketing automation
-- Your approach: Time and cost savings through smart systems
-- What makes you different or passionate about this work
-
-**Keep it:**
-- Conversational but professional
-- Focused on value, not just credentials
-- Personal enough to be relatable
-
----
-
-### 3. **Project Showcase** (The star of your page)
-**Purpose:** Demonstrate your expertise with real examples
-
-**Layout for each of 2 projects:**
-
-**Project Card 1 & 2 should each include:**
-- Project title/name
-- Client type (e.g., "E-commerce Fashion Brand" - keep anonymous if needed)
-- The challenge: What problem needed solving?
-- Your solution: Brief description of the automation you built
-- The results: Specific time/money saved (quantify it!)
-  - Example: "Reduced manual email tasks by 15 hours/week"
-  - Example: "Cut campaign setup costs by 40%"
-- Optional: Visual element
-  - Process flow diagram
-  - Before/after comparison
-  - Screenshot (anonymized if needed)
-
-**Presentation style:**
-- Each project gets equal prominence
-- Side-by-side on desktop, stacked on mobile
-- Results highlighted visually (bold, color accent, or callout box)
-
----
-
-### 4. **Social Proof / Testimonials**
-**Purpose:** Third-party validation of your work
-
-**Content includes:**
-- 1-3 testimonial quotes from clients or colleagues
-- Name and title of person (or "Marketing Director at B2C E-commerce Brand" if anonymous)
-- Focus testimonials on: results delivered, your expertise, or your process
-
-**If you have:**
-- Logos of brands you've worked with (even in general terms)
-- Stats like "X hours saved across projects" or "X brands helped"
-
----
-
-### 5. **Contact Section**
-**Purpose:** Make it easy to reach you
-
-**Content includes:**
-- Simple headline: "Let's Connect" or "Get in Touch"
-- Your preferred contact method(s):
-  - Email address
-  - LinkedIn profile link
-  - Other relevant professional platforms
-- Optional: Brief call-to-action
-  - Example: "Interested in B2C marketing automation? Let's talk."
-
-**Keep it:**
-- Simple and uncluttered
-- No complex contact forms (minimalist approach)
-- Direct and accessible
-
----
-
-## 🎨 Visual Style Guidelines
-
-### Color Palette (Minimalist Approach)
-
-**Option 1 - Classic Minimal:**
-- Primary: Deep charcoal or black (#1a1a1a) for text
-- Background: Pure white (#ffffff)
-- Accent: One subtle color for highlights (soft blue #4A90E2 or muted green #5EAA6F)
-- Use accent sparingly—for CTAs and key metrics only
-
-**Option 2 - Warm Minimal:**
-- Primary: Dark navy or near-black (#2C3E50)
-- Background: Off-white/cream (#FAFAF8)
-- Accent: Warm terracotta or rust (#D97757)
-
-**General rules:**
-- Stick to 2-3 colors maximum
-- Let white space dominate
-- Use color only for emphasis
-
----
-
-### Typography
-
-**Heading Font:**
-- Modern sans-serif (clean, bold presence)
-- Examples: Inter, Poppins, Space Grotesk, DM Sans
-- Use for: Your name, section headings, project titles
-
-**Body Font:**
-- Readable sans-serif (slightly lighter weight)
-- Examples: Inter, Open Sans, System fonts
-- Use for: All body text, descriptions, testimonials
-
-**Hierarchy:**
-- Hero name: Largest (48-72px desktop)
-- Section headings: Large (32-40px)
-- Project titles: Medium (24-28px)
-- Body text: Comfortable reading size (16-18px)
-- Keep line spacing generous (1.6-1.8x)
-
----
-
-### Layout & Spacing
-
-**Key principles:**
-- Generous white space everywhere
-- Clear visual separation between sections
-- Single column on mobile, smart use of columns on desktop
-- Consistent padding/margins throughout
-- No clutter, no unnecessary decorative elements
-
-**Sections:**
-- Each section has breathing room (80-120px between sections)
-- Content never stretches full width (max 1200px centered)
-- Projects get extra space to shine
-
----
-
-## 📸 Asset Checklist
-
-**Content you'll need to prepare:**
-
-✅ **Text Content:**
-- [ ] Hero headline and subtitle
-- [ ] About Me paragraph (2-3 sentences)
-- [ ] Project 1: Title, description, challenge, solution, results
-- [ ] Project 2: Title, description, challenge, solution, results
-- [ ] 1-3 testimonial quotes with attributions
-- [ ] Contact section copy
-
-✅ **Visual Assets:**
-- [ ] Optional: Professional headshot (if you want to personalize the About section)
-- [ ] Project visuals (for each of 2 projects):
-  - Workflow diagrams or flowcharts
-  - Before/after comparison graphics
-  - Anonymized screenshots of automation dashboards
-  - Process illustrations
-- [ ] Optional: Client logos (if you have permission and they're recognizable)
-
-✅ **Contact Info:**
-- [ ] Email address you want to display
-- [ ] LinkedIn profile URL
-- [ ] Any other professional profile links
-
-**Visual creation tips:**
-- Keep project visuals simple and clean
-- Use consistent styling across all visuals
-- Diagrams should be easy to understand at a glance
-- Screenshots should be cropped to show only relevant parts
-
----
-
-## 🚀 Layout Flow (Wireframe Description)
-
-Imagine your page flowing like this:
-
-```
-┌─────────────────────────────────────┐
-│                                     │
-│          [YOUR NAME]                │
-│   Marketing Automation Specialist   │
-│   Helping B2C Brands Save Time      │
-│                                     │
-│       [View My Work Button]         │
-│                                     │
-└─────────────────────────────────────┘
-
-┌─────────────────────────────────────┐
-│          About Me                   │
-│                                     │
-│   [2-3 sentence introduction        │
-│    focused on your B2C automation   │
-│    expertise and approach]          │
-│                                     │
-└─────────────────────────────────────┘
-
-┌─────────────────────────────────────┐
-│          Projects                   │
-│                                     │
-│  ┌────────────┐  ┌────────────┐   │
-│  │ Project 1  │  │ Project 2  │   │
-│  │            │  │            │   │
-│  │ Challenge  │  │ Challenge  │   │
-│  │ Solution   │  │ Solution   │   │
-│  │ Results ✨ │  │ Results ✨ │   │
-│  │            │  │            │   │
-│  │ [Visual]   │  │ [Visual]   │   │
-│  └────────────┘  └────────────┘   │
-│                                     │
-└─────────────────────────────────────┘
-
-┌─────────────────────────────────────┐
-│       What People Say               │
-│                                     │
-│   "Testimonial quote about your     │
-│    work and the results..."         │
-│   — Name, Title/Company             │
-│                                     │
-│   "Another great testimonial..."    │
-│   — Name, Title/Company             │
-│                                     │
-└─────────────────────────────────────┘
-
-┌─────────────────────────────────────┐
-│         Let's Connect               │
-│                                     │
-│   [Email icon] your@email.com       │
-│   [LinkedIn icon] LinkedIn Profile  │
-│                                     │
-│   Brief CTA text                    │
-│                                     │
-└─────────────────────────────────────┘
-```
-
-**On mobile:** All sections stack vertically, projects shown one above the other
-
-**On desktop:** Hero and sections full-width, projects side-by-side, everything centered
-
----
-
-## ✨ Future Enhancements (Phase 2 ideas)
-
-Once your core page is live and working, consider adding:
-
-**Content additions:**
-- Blog section or resources (build thought leadership)
-- Case study deep-dives (longer format project stories)
-- Video walkthrough of an automation you built
-- "Automation Tips" section with quick wins
-
-**Functionality:**
-- Newsletter signup (build an audience)
-- Downloadable resource (lead magnet - automation checklist/template)
-- Dark mode toggle (nice touch for minimalist design)
-- Smooth scroll animations (subtle, tasteful)
-
-**Credibility boosters:**
-- Certifications or platform badges (if you have them)
-- "As featured in" or "Mentioned by" section
-- More testimonials as you collect them
-- Metrics dashboard showing cumulative impact
-
----
-
-## 🎯 Key Success Metrics
-
-**How to know your page is working:**
-
-1. **Clarity test:** Can someone understand what you do in 5 seconds?
-2. **Results focus:** Are time/money savings immediately visible in projects?
-3. **Credibility:** Do testimonials and projects build trust?
-4. **Action:** Is it easy to contact you?
-5. **Aesthetic:** Does the minimalist design feel professional and intentional?
-
----
-
-## 📝 Next Steps
-
-**To bring this masterplan to life:**
-
-1. **Gather all content** from the Asset Checklist above
-2. **Refine your project descriptions** - make those results specific and impressive
-3. **Create or collect visuals** for your 2 projects
-4. **Write your About section** - keep it focused and authentic
-5. **Choose your color palette** from the options above (or create your own minimal scheme)
-6. **Select your fonts** - test readability on different devices
-7. **Build the page** using your preferred tool/platform
-8. **Test on mobile and desktop** - minimalist designs need perfect execution
-9. **Get feedback** from trusted peers
-10. **Launch and share!**
-
----
-
-## 💡 Pro Tips for Maximum Impact
-
-**Content writing:**
-- Use numbers in project results ("saved 20 hours/week" not "saved lots of time")
-- Start descriptions with action verbs
-- Keep sentences short and scannable
-- Remove any fluff words
-
-**Visual execution:**
-- When in doubt, add more white space
-- Align everything perfectly (consistency is key in minimal design)
-- Test on multiple screen sizes
-- Make sure text contrast is strong for readability
-
-**Credibility building:**
-- Specific results > vague claims
-- Real testimonials > no testimonials
-- Show process > just show outcomes
-- Quality over quantity (2 great projects > 5 mediocre ones)
-
----
-
-**Remember:** This is your professional showcase. Every element should serve a purpose. If something doesn't help visitors understand your expertise or results, remove it. Minimalism is about intentional choices, not just "less stuff."
-
-Good luck building your landing page! 🚀
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { DollarSign, AlertCircle } from "lucide-react";
+
+// Hardcoded ad account IDs for the dropdown
+const AD_ACCOUNTS = [
+  { id: "act_123456789", name: "Main Campaign Account" },
+  { id: "act_987654321", name: "Test Account" },
+  { id: "act_456789123", name: "Q4 Campaigns" },
+  { id: "act_789123456", name: "Brand Awareness" },
+  { id: "act_321654987", name: "Retargeting" },
+];
+
+const Index = () => {
+  const [selectedAccount, setSelectedAccount] = useState<string>("");
+  const [balance, setBalance] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleFetchBalance = async () => {
+    if (!selectedAccount) {
+      setError("Please select an ad account");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+    setBalance(null);
+
+    // Simulate API call (replace with actual n8n webhook endpoint)
+    try {
+      // TODO: Replace with actual n8n webhook URL
+      // const response = await fetch('YOUR_N8N_WEBHOOK_URL', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ ad_account_id: selectedAccount })
+      // });
+
+      // Simulated delay
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      // Mock response - remove this and uncomment above when integrating with backend
+      const mockBalance = (Math.random() * 10000).toFixed(2);
+      setBalance(mockBalance);
+    } catch (err) {
+      setError("Looks like Facebook API is down. Please try after 5 minutes");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-background p-6">
+      <div className="max-w-2xl mx-auto space-y-6">
+        {/* Header */}
+        <div className="text-center space-y-2 pt-8">
+          <h1 className="text-4xl font-bold text-foreground">Facebook Ad Account Balance Checker</h1>
+          <p className="text-muted-foreground">
+            Quickly check the available balance for your Facebook ad accounts
+          </p>
+        </div>
+
+        {/* Main Card */}
+        <Card className="shadow-lg">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <DollarSign className="h-5 w-5 text-primary" />
+              Check Balance
+            </CardTitle>
+            <CardDescription>Select an ad account to view its current balance</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Account Selection */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-foreground">Ad Account</label>
+              <Select value={selectedAccount} onValueChange={setSelectedAccount}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select an ad account" />
+                </SelectTrigger>
+                <SelectContent>
+                  {AD_ACCOUNTS.map((account) => (
+                    <SelectItem key={account.id} value={account.id}>
+                      {account.name} ({account.id})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Fetch Button */}
+            <Button
+              onClick={handleFetchBalance}
+              disabled={loading || !selectedAccount}
+              className="w-full"
+              size="lg"
+            >
+              {loading ? "Fetching Balance..." : "Fetch Balance"}
+            </Button>
+
+            {/* Error Display */}
+            {error && (
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+
+            {/* Balance Display */}
+            {balance && !error && (
+              <Card className="bg-muted">
+                <CardContent className="pt-6">
+                  <div className="text-center space-y-2">
+                    <p className="text-sm text-muted-foreground">Available Balance</p>
+                    <p className="text-4xl font-bold text-success">
+                      ${parseFloat(balance).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </p>
+                    <p className="text-xs text-muted-foreground">USD</p>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Info Footer */}
+        <div className="text-center text-sm text-muted-foreground">
+          <p>This tool fetches real-time balance data from Facebook's Ad API</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Index;
