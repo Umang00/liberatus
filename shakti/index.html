@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAIJU KINGDOM - Today We Bring the Apocalypse</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial Black', 'Arial Bold', Gadget, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)), 
+                        url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1920') center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            border-bottom: 4px solid #ff0000;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(255,0,0,0.1), transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .hero-content {
+            z-index: 2;
+            max-width: 1200px;
+            padding: 20px;
+        }
+
+        .logo {
+            font-size: 5rem;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000;
+            letter-spacing: 8px;
+            margin-bottom: 20px;
+            animation: glitch 3s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 90%, 100% { transform: translate(0); }
+            92% { transform: translate(-2px, 2px); }
+            94% { transform: translate(2px, -2px); }
+            96% { transform: translate(-2px, -2px); }
+        }
+
+        .tagline {
+            font-size: 2rem;
+            color: #ff4500;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+        }
+
+        .hook {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            color: #cccccc;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #ff0000, #cc0000);
+            color: #fff;
+            border: 2px solid #ff4500;
+            padding: 20px 50px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(255,0,0,0.5);
+            letter-spacing: 2px;
+        }
+
+        .cta-button:hover {
+            background: linear-gradient(45deg, #cc0000, #990000);
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(255,0,0,0.8);
+        }
+
+        /* Section Styling */
+        section {
+            padding: 80px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 60px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #ff0000, #ff4500);
+            margin: 20px auto;
+        }
+
+        /* Arsenal Section */
+        .arsenal {
+            background: linear-gradient(180deg, #0a0a0a, #1a0000, #0a0a0a);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .product-card {
+            background: linear-gradient(135deg, #1a1a1a, #2a0000);
+            border: 2px solid #ff0000;
+            padding: 30px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,0,0,0.1), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .product-card:hover::before {
+            opacity: 1;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 10px 40px rgba(255,0,0,0.4);
+            border-color: #ff4500;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            border: 1px solid #333;
+        }
+
+        .product-name {
+            font-size: 1.8rem;
+            color: #ff4500;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .product-desc {
+            color: #ccc;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .product-specs {
+            font-size: 0.9rem;
+            color: #999;
+            margin-bottom: 20px;
+        }
+
+        .product-button {
+            background: transparent;
+            border: 2px solid #ff0000;
+            color: #ff0000;
+            padding: 12px 30px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .product-button:hover {
+            background: #ff0000;
+            color: #fff;
+        }
+
+        /* Value Prop Section */
+        .value-prop {
+            background: #0a0a0a;
+        }
+
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .value-card {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+            border: 2px solid #333;
+            transition: border-color 0.3s;
+        }
+
+        .value-card:hover {
+            border-color: #ff0000;
+        }
+
+        .value-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .value-title {
+            font-size: 1.5rem;
+            color: #ff4500;
+            margin-bottom: 15px;
+        }
+
+        .value-text {
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        /* Wormhole Section */
+        .wormhole {
+            background: linear-gradient(180deg, #0a0a0a, #000a1a, #0a0a0a);
+            text-align: center;
+        }
+
+        .wormhole-visual {
+            width: 300px;
+            height: 300px;
+            margin: 40px auto;
+            background: radial-gradient(circle, #0066ff, #000033);
+            border-radius: 50%;
+            animation: rotate 10s linear infinite;
+            box-shadow: 0 0 60px rgba(0,102,255,0.6);
+            position: relative;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .wormhole-visual::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, #000033, transparent);
+            border-radius: 50%;
+        }
+
+        .wormhole-text {
+            max-width: 800px;
+            margin: 0 auto 40px;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #ccc;
+        }
+
+        /* Contact Form */
+        .contact {
+            background: linear-gradient(180deg, #0a0a0a, #1a0000);
+        }
+
+        .form-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #1a1a1a;
+            padding: 50px;
+            border: 2px solid #ff0000;
+        }
+
+        .form-subtitle {
+            text-align: center;
+            color: #ff4500;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ccc;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            background: #0a0a0a;
+            border: 2px solid #333;
+            color: #fff;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #ff0000;
+            box-shadow: 0 0 10px rgba(255,0,0,0.3);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-button {
+            width: 100%;
+            background: linear-gradient(45deg, #ff0000, #cc0000);
+            color: #fff;
+            border: 2px solid #ff4500;
+            padding: 18px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 2px;
+        }
+
+        .submit-button:hover {
+            background: linear-gradient(45deg, #cc0000, #990000);
+            box-shadow: 0 0 30px rgba(255,0,0,0.6);
+        }
+
+        /* Footer */
+        footer {
+            background: #000;
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 2px solid #ff0000;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            color: #ff0000;
+            margin-bottom: 10px;
+        }
+
+        .footer-tagline {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .footer-disclaimer {
+            color: #444;
+            font-size: 0.8rem;
+            font-style: italic;
+            margin-top: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 3rem;
+            }
+
+            .tagline {
+                font-size: 1.3rem;
+            }
+
+            .hook {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="logo">KAIJU KINGDOM</h1>
+            <p class="tagline">Today We Bring the Apocalypse</p>
+            <p class="hook">Life-Size. Fully Armed. Your Chaos Awaits.</p>
+            <button class="cta-button" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">
+                UNLEASH THE APOCALYPSE
+            </button>
+        </div>
+    </section>
+
+    <!-- Arsenal Section -->
+    <section class="arsenal" id="arsenal">
+        <h2 class="section-title">Choose Your Weapon</h2>
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="product-image">🦖</div>
+                <h3 class="product-name">Apex Destroyer</h3>
+                <p class="product-desc">Classic kaiju power meets modern devastation. Atomic breath capable of leveling city blocks.</p>
+                <p class="product-specs">Height: 350ft | Weapons: Plasma Beam, Tail Strike | Power: Nuclear Fusion</p>
+                <button class="product-button" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Claim This Beast</button>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">🤖</div>
+                <h3 class="product-name">Nuclear Ravager</h3>
+                <p class="product-desc">Robotic precision meets apocalyptic firepower. Fully autonomous destruction mode.</p>
+                <p class="product-specs">Height: 280ft | Weapons: Missile Arrays, EMP Pulse | Power: Cold Fusion</p>
+                <button class="product-button" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Claim This Beast</button>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">💀</div>
+                <h3 class="product-name">Death Titan</h3>
+                <p class="product-desc">The ultimate death robot. No mercy protocols, only chaos execution.</p>
+                <p class="product-specs">Height: 400ft | Weapons: Plasma Cannons, Seismic Fists | Power: Dark Matter</p>
+                <button class="product-button" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Claim This Beast</button>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">⚡</div>
+                <h3 class="product-name">Storm Breaker</h3>
+                <p class="product-desc">Bio-mechanical hybrid with electromagnetic warfare capabilities.</p>
+                <p class="product-specs">Height: 320ft | Weapons: Lightning Strike, Storm Generation | Power: Tesla Core</p>
+                <button class="product-button" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Claim This Beast</button>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">🔥</div>
+                <h3 class="product-name">Inferno King</h3>
+                <p class="product-desc">Molten core kaiju built for total incineration. Leaves nothing but ash.</p>
+                <p class="product-specs">Height: 380ft | Weapons: Lava Breath, Heat Wave | Power: Magma Reactor</p>
+                <button class="product-button" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Claim This Beast</button>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">🛸</div>
+                <h3 class="product-name">Void Sentinel</h3>
+                <p class="product-desc">Experimental alien tech merged with kaiju DNA. Reality-bending capabilities.</p>
+                <p class="product-specs">Height: 340ft | Weapons: Gravity Manipulation, Void Beam | Power: Quantum</p>
+                <button class="product-button" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Claim This Beast</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Value Proposition -->
+    <section class="value-prop">
+        <h2 class="section-title">Why Settle for Ordinary Pets?</h2>
+        <div class="value-grid">
+            <div class="value-card">
+                <div class="value-icon">⚔️</div>
+                <h3 class="value-title">Life-Size & Fully Armed</h3>
+                <p class="value-text">No toys, no props. Real scale, real weapons. These beasts mean business.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="value-icon">💥</div>
+                <h3 class="value-title">Built for Chaos</h3>
+                <p class="value-text">Designed for those who embrace the apocalypse. Maximum destruction guaranteed.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="value-icon">🌀</div>
+                <h3 class="value-title">Exclusive Access</h3>
+                <p class="value-text">Not sold in stores. Pickup at the wormhole only. You've been warned.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="value-icon">🔧</div>
+                <h3 class="value-title">Customizable Destruction</h3>
+                <p class="value-text">Choose your weapon loadouts and modifications. Make it yours.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wormhole Section -->
+    <section class="wormhole">
+        <h2 class="section-title">Pickup at the Wormhole</h2>
+        <div class="wormhole-visual"></div>
+        <p class="wormhole-text">
+            This isn't Amazon. Your apocalypse pet doesn't arrive in a box. Once you're qualified, we'll guide you to the wormhole—our secret location where you'll claim your beast in person. Coordinates revealed only to confirmed buyers. Are you ready to step through?
+        </p>
+    </section>
+
+    <!-- Contact Form -->
+    <section class="contact" id="contact">
+        <h2 class="section-title">Ready for the Apocalypse?</h2>
+        <div class="form-container">
+            <p class="form-subtitle">Fill out the form below. If you're worthy, we'll send you wormhole coordinates.</p>
+            <form id="chaosForm">
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number *</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Location/City *</label>
+                    <input type="text" id="location" name="location" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="kaiju">Which kaiju/robot interests you? *</label>
+                    <select id="kaiju" name="kaiju" required>
+                        <option value="">Select Your Beast</option>
+                        <option value="apex">Apex Destroyer</option>
+                        <option value="nuclear">Nuclear Ravager</option>
+                        <option value="death">Death Titan</option>
+                        <option value="storm">Storm Breaker</option>
+                        <option value="inferno">Inferno King</option>
+                        <option value="void">Void Sentinel</option>
+                        <option value="custom">Custom Chaos</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="budget">Budget Range</label>
+                    <select id="budget" name="budget">
+                        <option value="">Select Range</option>
+                        <option value="1m">$1M - $5M</option>
+                        <option value="5m">$5M - $10M</option>
+                        <option value="10m">$10M - $50M</option>
+                        <option value="50m">$50M+</option>
+                        <option value="unlimited">Unlimited</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="use">Intended Use *</label>
+                    <select id="use" name="use" required>
+                        <option value="">Select Purpose</option>
+                        <option value="collection">Collection</option>
+                        <option value="security">Security</option>
+                        <option value="chaos">Pure Chaos</option>
+                        <option value="domination">World Domination</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="source">How did you hear about Kaiju Kingdom?</label>
+                    <input type="text" id="source" name="source">
+                </div>
+
+                <div class="form-group">
+                    <label for="why">Tell us why you're ready for chaos *</label>
+                    <textarea id="why" name="why" required></textarea>
+                </div>
+
+                <button type="submit" class="submit-button">SUMMON MY BEAST</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">KAIJU KINGDOM</div>
+        <div class="footer-tagline">Today We Bring the Apocalypse</div>
+        <p class="footer-disclaimer">
+            Kaiju Kingdom is not responsible for collateral damage, neighborhood complaints, or the actual apocalypse.
+        </p>
+    </footer>
+
+    <script>
+        document.getElementById('chaosForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('🌀 COORDINATES INCOMING!\n\nCheck your email for wormhole access.\n\nThe apocalypse awaits...');
+            this.reset();
+        });
+    </script>
+
+</body>
+</html>
