@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Font Dataset Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        
+        .upload-section {
+            background: #f8f9ff;
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-section:hover {
+            background: #f0f2ff;
+            border-color: #5a67d8;
+        }
+        
+        .upload-section.dragover {
+            background: #e6f3ff;
+            border-color: #3182ce;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .upload-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: transform 0.2s ease;
+        }
+        
+        .upload-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .control-group {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .control-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .control-group input, .control-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.2s ease;
+        }
+        
+        .control-group input:focus, .control-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .generate-button {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 18px;
+            display: block;
+            margin: 20px auto;
+            transition: transform 0.2s ease;
+        }
+        
+        .generate-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .generate-button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .preview-item {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        
+        .preview-item:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+        
+        .sample-text {
+            font-size: 24px;
+            margin-bottom: 15px;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 8px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .caption {
+            font-size: 12px;
+            color: #666;
+            background: #f1f5f9;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-family: monospace;
+        }
+        
+        .download-section {
+            text-align: center;
+            margin-top: 30px;
+            padding: 30px;
+            background: #f8f9ff;
+            border-radius: 10px;
+        }
+        
+        .download-button {
+            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 18px;
+            margin: 10px;
+            transition: transform 0.2s ease;
+        }
+        
+        .download-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .status {
+            text-align: center;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        
+        .status.success {
+            background: #f0fff4;
+            color: #22543d;
+            border: 2px solid #9ae6b4;
+        }
+        
+        .status.error {
+            background: #fff5f5;
+            color: #742a2a;
+            border: 2px solid #feb2b2;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .troubleshoot {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff3cd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .troubleshoot summary {
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .troubleshoot ul {
+            text-align: left;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Font Dataset Generator</h1>
+        
+        <div class="upload-section" id="uploadSection">
+            <h3>Upload Your Font (.otf or .ttf)</h3>
+            <p>Drag and drop your font file here or click to select</p>
+            <p><small>Supported formats: OTF, TTF | Max size: 5MB</small></p>
+            <input type="file" id="fontFile" class="file-input" accept=".otf,.ttf">
+            <button class="upload-button" onclick="document.getElementById('fontFile').click()">
+                Choose Font File
+            </button>
+            <div id="fontStatus"></div>
+            
+            <details class="troubleshoot">
+                <summary>🔧 Having trouble uploading? Click here for help</summary>
+                <div>
+                    <p><strong>Common solutions:</strong></p>
+                    <ul>
+                        <li>Make sure your file is a valid .otf or .ttf font file</li>
+                        <li>Check that the file size is under 5MB</li>
+                        <li>Try refreshing the page and uploading again</li>
+                        <li>Some browser extensions may block file uploads - try disabling them</li>
+                        <li>If using a corporate network, firewall settings might interfere</li>
+                    </ul>
+                    <p><strong>Alternative:</strong> If you continue having issues, you can use a fallback system font and still generate a useful dataset structure.</p>
+                </div>
+            </details>
+        </div>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label for="imageCount">Number of Images:</label>
+                <input type="number" id="imageCount" value="100" min="10" max="1000">
+            </div>
+            
+            <div class="control-group">
+                <label for="imageWidth">Image Width:</label>
+                <input type="number" id="imageWidth" value="512" min="256" max="1024" step="64">
+            </div>
+            
+            <div class="control-group">
+                <label for="imageHeight">Image Height:</label>
+                <input type="number" id="imageHeight" value="512" min="256" max="1024" step="64">
+            </div>
+            
+            <div class="control-group">
+                <label for="fontSize">Font Size Range:</label>
+                <select id="fontSize">
+                    <option value="small">Small (20-40px)</option>
+                    <option value="medium" selected>Medium (40-80px)</option>
+                    <option value="large">Large (80-120px)</option>
+                    <option value="mixed">Mixed Sizes</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="textVariety">Text Variety:</label>
+                <select id="textVariety">
+                    <option value="words">Single Words</option>
+                    <option value="phrases" selected>Short Phrases</option>
+                    <option value="sentences">Full Sentences</option>
+                    <option value="mixed">Mixed Content</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="backgrounds">Background Style:</label>
+                <select id="backgrounds">
+                    <option value="white" selected>White Background</option>
+                    <option value="colors">Colored Backgrounds</option>
+                    <option value="mixed">Mixed Backgrounds</option>
+                </select>
+            </div>
+        </div>
+        
+        <button class="generate-button" id="generateButton" onclick="generateDataset()" disabled>
+            Generate Dataset
+        </button>
+        
+        <div id="status"></div>
+        <div id="progressContainer" style="display: none;">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div id="progressText"></div>
+        </div>
+        
+        <div id="previewGrid" class="preview-grid"></div>
+        
+        <div id="downloadSection" class="download-section" style="display: none;">
+            <h3>📥 Download Your Dataset</h3>
+            <p>Your dataset has been generated successfully!</p>
+            <button class="download-button" id="downloadImages">Download Images (ZIP)</button>
+            <button class="download-button" id="downloadCaptions">Download Captions (TXT)</button>
+            <button class="download-button" id="downloadMetadata">Download Metadata (JSON)</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+    <script>
+        let loadedFont = null;
+        let generatedDataset = [];
+        
+        const sampleTexts = {
+            words: [
+                'Typography', 'Letters', 'Script', 'Style', 'Design', 'Text', 'Font', 'Words',
+                'Character', 'Glyphs', 'Writing', 'Message', 'Content', 'Display', 'Elegant',
+                'Modern', 'Classic', 'Creative', 'Artistic', 'Stylish', 'Unique',
+                'Quality', 'Premium', 'Refined', 'Polished', 'Professional', 'Distinctive'
+            ],
+            phrases: [
+                'Sample Text', 'Font Display', 'Typography Test', 'Letter Forms',
+                'Character Set', 'Text Style', 'Font Sample', 'Design Elements',
+                'Creative Writing', 'Modern Text', 'Classic Style', 'Custom Font',
+                'Premium Quality', 'Professional Look', 'Elegant Design', 'Unique Style',
+                'Perfect Letters', 'Smooth Text', 'Clean Design', 'Stylish Font'
+            ],
+            sentences: [
+                'Typography showcases the art of letters.',
+                'Every font tells its own unique story.',
+                'Good design starts with great typography.',
+                'Letters come alive through careful craft.',
+                'Font selection shapes visual communication.',
+                'Typography bridges words and meaning.',
+                'Each character has its perfect form.',
+                'Design flows through thoughtful lettering.',
+                'Custom fonts create distinctive brands.',
+                'Typography elevates every written word.'
+            ]
+        };
+        
+        const backgroundGenerators = {
+            white: () => '#ffffff',
+            colors: () => {
+                const colors = ['#f7fafc', '#fef5e7', '#f0fff4', '#fef2f2', '#f0f4ff', '#fffbf0'];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+        };
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('fontFile').addEventListener('change', handleFontUpload);
+            document.getElementById('uploadSection').addEventListener('dragover', handleDragOver);
+            document.getElementById('uploadSection').addEventListener('drop', handleDrop);
+            document.getElementById('uploadSection').addEventListener('dragleave', handleDragLeave);
+        });
+        
+        function handleDragOver(e) {
+            e.preventDefault();
+            document.getElementById('uploadSection').classList.add('dragover');
+        }
+        
+        function handleDragLeave() {
+            document.getElementById('uploadSection').classList.remove('dragover');
+        }
+        
+        function handleDrop(e) {
+            e.preventDefault();
+            document.getElementById('uploadSection').classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFontFile(files[0]);
+            }
+        }
+        
+        function handleFontUpload(e) {
+            const file = e.target.files[0];
+            if (file) {
+                handleFontFile(file);
+            }
+        }
+        
+        function handleFontFile(file) {
+            console.log('File selected:', file.name, 'Size:', file.size, 'Type:', file.type);
+            
+            if (!file) {
+                showStatus('No file selected', 'error');
+                return;
+            }
+            
+            if (!file.name.match(/\.(otf|ttf)$/i)) {
+                showStatus('Please select a valid font file (.otf or .ttf)', 'error');
+                return;
+            }
+            
+            if (file.size === 0) {
+                showStatus('File appears to be empty', 'error');
+                return;
+            }
+            
+            if (file.size > 5 * 1024 * 1024) {
+                showStatus('Font file is too large (max 5MB)', 'error');
+                return;
+            }
+            
+            showStatus('Reading font file...', 'success');
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                console.log('File read successfully, size:', e.target.result.byteLength);
+                loadFont(e.target.result, file.name);
+            };
+            reader.onerror = function(e) {
+                console.error('FileReader error:', e);
+                showStatus('Error reading font file', 'error');
+            };
+            reader.readAsArrayBuffer(file);
+        }
+        
+        function loadFont(fontData, fileName) {
+            try {
+                console.log('Attempting to load font:', fileName);
+                showStatus('Loading font...', 'success');
+                
+                const fontFamily = 'CustomFont_' + Date.now();
+                const fontFace = new FontFace(fontFamily, fontData);
+                
+                fontFace.load().then(function(loadedFontFace) {
+                    console.log('Font loaded successfully');
+                    document.fonts.add(loadedFontFace);
+                    
+                    loadedFont = {
+                        fontFace: loadedFontFace,
+                        fontFamily: fontFamily
+                    };
+                    
+                    const testCanvas = document.createElement('canvas');
+                    const testCtx = testCanvas.getContext('2d');
+                    testCtx.font = '20px ' + fontFamily;
+                    const metrics = testCtx.measureText('Test');
+                    
+                    if (metrics.width > 0) {
+                        console.log('Font test successful');
+                        document.getElementById('fontStatus').innerHTML = 
+                            '<div style="color: green; margin-top: 15px;">✓ Font loaded: ' + fileName + '</div>' +
+                            '<div style="font-family: ' + fontFamily + '; font-size: 18px; margin-top: 10px; padding: 10px; background: #f0f0f0; border-radius: 5px;">Sample Text Preview</div>';
+                        document.getElementById('generateButton').disabled = false;
+                        
+                        showStatus('Font loaded successfully! Ready to generate dataset.', 'success');
+                    } else {
+                        throw new Error('Font loaded but cannot render text');
+                    }
+                }).catch(function(error) {
+                    console.error('Font loading error:', error);
+                    showStatus('Error loading font: ' + error.message, 'error');
+                });
+                
+            } catch (error) {
+                console.error('Font loading error:', error);
+                showStatus('Error loading font: ' + error.message, 'error');
+            }
+        }
+        
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = 'status ' + type;
+            status.style.display = 'block';
+        }
+        
+        function updateProgress(current, total) {
+            const percentage = (current / total) * 100;
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = 'Generating image ' + current + ' of ' + total;
+        }
+        
+        function generateDataset() {
+            if (!loadedFont) {
+                showStatus('Please load a font first', 'error');
+                return;
+            }
+            
+            const imageCount = parseInt(document.getElementById('imageCount').value);
+            const imageWidth = parseInt(document.getElementById('imageWidth').value);
+            const imageHeight = parseInt(document.getElementById('imageHeight').value);
+            const fontSize = document.getElementById('fontSize').value;
+            const textVariety = document.getElementById('textVariety').value;
+            const backgroundStyle = document.getElementById('backgrounds').value;
+            
+            document.getElementById('generateButton').disabled = true;
+            document.getElementById('progressContainer').style.display = 'block';
+            document.getElementById('previewGrid').innerHTML = '';
+            generatedDataset = [];
+            
+            showStatus('Generating dataset...', 'success');
+            
+            const uppercaseAlphabet = generateAlphabetImage('uppercase', imageWidth, imageHeight, fontSize, backgroundStyle);
+            const lowercaseAlphabet = generateAlphabetImage('lowercase', imageWidth, imageHeight, fontSize, backgroundStyle);
+            
+            generatedDataset.push(uppercaseAlphabet);
+            generatedDataset.push(lowercaseAlphabet);
+            
+            addPreviewItem(uppercaseAlphabet, 'uppercase');
+            addPreviewItem(lowercaseAlphabet, 'lowercase');
+            
+            updateProgress(2, imageCount + 2);
+            
+            let currentIndex = 0;
+            function generateNextImage() {
+                if (currentIndex < imageCount) {
+                    const imageData = generateImage(currentIndex + 2, imageWidth, imageHeight, fontSize, textVariety, backgroundStyle);
+                    generatedDataset.push(imageData);
+                    
+                    if (currentIndex < 10) {
+                        addPreviewItem(imageData, currentIndex + 2);
+                    }
+                    
+                    updateProgress(currentIndex + 3, imageCount + 2);
+                    currentIndex++;
+                    
+                    setTimeout(generateNextImage, 10);
+                } else {
+                    document.getElementById('generateButton').disabled = false;
+                    document.getElementById('progressContainer').style.display = 'none';
+                    document.getElementById('downloadSection').style.display = 'block';
+                    
+                    showStatus('Successfully generated ' + (imageCount + 2) + ' images (including alphabet samples)!', 'success');
+                    setupDownloadButtons();
+                }
+            }
+            
+            generateNextImage();
+        }
+        
+        function generateAlphabetImage(type, width, height, fontSizeRange, backgroundStyle) {
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            
+            const background = backgroundGenerators.white();
+            ctx.fillStyle = background;
+            ctx.fillRect(0, 0, width, height);
+            
+            const text = type === 'uppercase' ? 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' : 'abcdefghijklmnopqrstuvwxyz';
+            
+            let fontSize = Math.min(width, height) / 16;
+            fontSize = Math.max(fontSize, 16);
+            
+            ctx.font = fontSize + 'px ' + loadedFont.fontFamily;
+            ctx.fillStyle = '#333333';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            const maxWidth = width - 40;
+            const textWidth = ctx.measureText(text).width;
+            
+            if (textWidth <= maxWidth) {
+                ctx.fillText(text, width / 2, height / 2);
+            } else {
+                const lineHeight = fontSize * 1.2;
+                const charsPerLine = Math.floor(26 / Math.ceil(textWidth / maxWidth));
+                const lines = [];
+                
+                for (let i = 0; i < text.length; i += charsPerLine) {
+                    lines.push(text.substring(i, i + charsPerLine));
+                }
+                
+                const totalHeight = lines.length * lineHeight;
+                const startY = (height - totalHeight) / 2 + lineHeight / 2;
+                
+                for (let j = 0; j < lines.length; j++) {
+                    ctx.fillText(lines[j], width / 2, startY + j * lineHeight);
+                }
+            }
+            
+            const caption = 'Custom handwritten font alphabet sample showing all ' + type + ' letters ' + text + ' in elegant script style';
+            
+            return {
+                canvas: canvas,
+                dataUrl: canvas.toDataURL('image/png'),
+                text: text,
+                caption: caption,
+                metadata: {
+                    index: type === 'uppercase' ? 'alphabet_uppercase' : 'alphabet_lowercase',
+                    text: text,
+                    fontSize: Math.round(fontSize),
+                    background: backgroundStyle,
+                    width: width,
+                    height: height,
+                    type: 'alphabet_sample'
+                }
+            };
+        }
+        
+        function generateImage(index, width, height, fontSizeRange, textVariety, backgroundStyle) {
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            
+            let background = backgroundGenerators[backgroundStyle] || backgroundGenerators.white;
+            if (backgroundStyle === 'mixed') {
+                const styles = ['white', 'colors'];
+                const randomStyle = styles[Math.floor(Math.random() * styles.length)];
+                background = backgroundGenerators[randomStyle];
+            }
+            
+            ctx.fillStyle = background();
+            ctx.fillRect(0, 0, width, height);
+            
+            let text;
+            if (textVariety === 'mixed') {
+                const varieties = ['words', 'phrases', 'sentences'];
+                const randomVariety = varieties[Math.floor(Math.random() * varieties.length)];
+                text = sampleTexts[randomVariety][Math.floor(Math.random() * sampleTexts[randomVariety].length)];
+            } else {
+                text = sampleTexts[textVariety][Math.floor(Math.random() * sampleTexts[textVariety].length)];
+            }
+            
+            let size;
+            if (fontSizeRange === 'small') size = 20 + Math.random() * 20;
+            else if (fontSizeRange === 'medium') size = 40 + Math.random() * 40;
+            else if (fontSizeRange === 'large') size = 80 + Math.random() * 40;
+            else size = 20 + Math.random() * 100;
+            
+            ctx.font = size + 'px ' + loadedFont.fontFamily;
+            ctx.fillStyle = '#333333';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            const x = width / 2 + (Math.random() - 0.5) * 40;
+            const y = height / 2 + (Math.random() - 0.5) * 40;
+            
+            ctx.fillText(text, x, y);
+            
+            const caption = generateCaption(text, size, backgroundStyle);
+            
+            return {
+                canvas: canvas,
+                dataUrl: canvas.toDataURL('image/png'),
+                text: text,
+                caption: caption,
+                metadata: {
+                    index: index,
+                    text: text,
+                    fontSize: Math.round(size),
+                    background: backgroundStyle,
+                    width: width,
+                    height: height
+                }
+            };
+        }
+        
+        function generateCaption(text, fontSize, backgroundStyle) {
+            const sizeDesc = fontSize < 40 ? 'small' : fontSize < 80 ? 'medium' : 'large';
+            const bgDesc = backgroundStyle === 'white' ? 'white background' : 'colored background';
+            
+            const templates = [
+                'Custom handwritten font displaying "' + text + '" in ' + sizeDesc + ' size on ' + bgDesc,
+                '"' + text + '" written in custom handwriting style, ' + sizeDesc + ' text on ' + bgDesc,
+                'Handwritten text "' + text + '" in custom font, ' + sizeDesc + ' lettering with ' + bgDesc
+            ];
+            
+            return templates[Math.floor(Math.random() * templates.length)];
+        }
+        
+        function addPreviewItem(imageData, index) {
+            const previewGrid = document.getElementById('previewGrid');
+            const item = document.createElement('div');
+            item.className = 'preview-item';
+            
+            const displayIndex = typeof index === 'string' ? index : 'Sample ' + (index + 1);
+            
+            item.innerHTML = 
+                '<div class="sample-text">' +
+                    '<img src="' + imageData.dataUrl + '" style="max-width: 100%; max-height: 100px;" alt="' + displayIndex + '">' +
+                '</div>' +
+                '<div class="caption">' + imageData.caption + '</div>';
+            
+            previewGrid.appendChild(item);
+        }
+        
+        function setupDownloadButtons() {
+            document.getElementById('downloadImages').onclick = downloadImages;
+            document.getElementById('downloadCaptions').onclick = downloadCaptions;
+            document.getElementById('downloadMetadata').onclick = downloadMetadata;
+        }
+        
+        function downloadImages() {
+            const zip = new JSZip();
+            const imagesFolder = zip.folder('images');
+            
+            for (let i = 0; i < generatedDataset.length; i++) {
+                const imageData = generatedDataset[i];
+                const base64Data = imageData.dataUrl.split(',')[1];
+                
+                let filename;
+                if (imageData.metadata.type === 'alphabet_sample') {
+                    filename = 'custom_font_' + imageData.metadata.index + '.png';
+                } else {
+                    const regularIndex = i - 2;
+                    filename = 'custom_font_' + String(regularIndex).padStart(4, '0') + '.png';
+                }
+                
+                imagesFolder.file(filename, base64Data, {base64: true});
+            }
+            
+            zip.generateAsync({type: 'blob'}).then(function(content) {
+                downloadBlob(content, 'custom_font_images.zip');
+            });
+        }
+        
+        function downloadCaptions() {
+            let captionsText = '';
+            for (let i = 0; i < generatedDataset.length; i++) {
+                const imageData = generatedDataset[i];
+                let filename;
+                
+                if (imageData.metadata.type === 'alphabet_sample') {
+                    filename = 'custom_font_' + imageData.metadata.index + '.png';
+                } else {
+                    const regularIndex = i - 2;
+                    filename = 'custom_font_' + String(regularIndex).padStart(4, '0') + '.png';
+                }
+                
+                captionsText += filename + ': ' + imageData.caption + '\n';
+            }
+            
+            const blob = new Blob([captionsText], { type: 'text/plain' });
+            downloadBlob(blob, 'custom_font_captions.txt');
+        }
+        
+        function downloadMetadata() {
+            const metadata = {
+                dataset_info: {
+                    name: 'Custom Font Dataset',
+                    total_images: generatedDataset.length,
+                    image_format: 'PNG',
+                    font_family: 'Custom Font',
+                    generated_at: new Date().toISOString()
+                },
+                images: generatedDataset.map(function(item) { return item.metadata; })
+            };
+            
+            const blob = new Blob([JSON.stringify(metadata, null, 2)], { type: 'application/json' });
+            downloadBlob(blob, 'custom_font_metadata.json');
+        }
+        
+        function downloadBlob(blob, filename) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
