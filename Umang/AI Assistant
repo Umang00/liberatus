@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Umang — AI PM</title>
+  <meta name="description" content="AI Product Manager portfolio showcasing projects, outcomes, and contact." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #0b1020;          /* deep navy */
+      --card: #11162a;        /* slightly lighter */
+      --text: #e6e9f2;        /* near-white */
+      --muted:#9aa3b2;        /* muted text */
+      --brand:#7c8cff;        /* brand indigo */
+      --accent:#7f56d9;       /* violet */
+      --ok:#10b981;           /* green */
+      --warn:#f59e0b;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 16px;
+      --maxw: 1080px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background: radial-gradient(1200px 800px at 10% -10%, rgba(124,140,255,.15), transparent 60%),
+                          radial-gradient(900px 600px at 110% -20%, rgba(127,86,217,.15), transparent 60%),
+                          var(--bg);
+      color:var(--text); font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
+      line-height:1.6; overflow-x:hidden;
+    }
+    a{color:inherit}
+    .container{max-width:var(--maxw); margin:0 auto; padding:28px 20px}
+    header{position:sticky; top:0; backdrop-filter:saturate(140%) blur(10px); background:rgba(11,16,32,.6); border-bottom:1px solid rgba(255,255,255,.06); z-index:50}
+    .nav{display:flex; align-items:center; justify-content:space-between; gap:16px}
+    .brand{display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:-.02em}
+    .logo{width:28px;height:28px; display:grid; place-items:center; border-radius:8px; background:linear-gradient(135deg,var(--brand),var(--accent)); box-shadow:var(--shadow)}
+    .nav a.btn{padding:10px 14px; border-radius:12px; border:1px solid rgba(255,255,255,.08); background:#0f1427; color:var(--text); text-decoration:none}
+    .nav a.cta{background:linear-gradient(135deg,var(--brand),var(--accent)); border:none; font-weight:600}
+
+    /* Hero */
+    .hero{padding:72px 20px 48px}
+    .hero-grid{display:grid; grid-template-columns:1.2fr .9fr; gap:28px; align-items:center}
+    .kicker{display:inline-block; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); border:1px solid rgba(255,255,255,.08); padding:6px 10px; border-radius:999px}
+    h1{font-size: clamp(32px, 5vw, 54px); line-height:1.1; margin:14px 0 10px; letter-spacing:-.03em}
+    .subtitle{color:var(--muted); max-width:52ch}
+    .pillbar{display:flex; flex-wrap:wrap; gap:10px; margin:18px 0 26px}
+    .pill{font-size:13px; padding:8px 12px; border-radius:999px; background:rgba(124,140,255,.12); border:1px solid rgba(124,140,255,.35)}
