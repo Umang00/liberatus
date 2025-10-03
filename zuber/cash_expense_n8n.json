@@ -1,0 +1,344 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "id": "TelegramTrigger",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [],
+          "number": [],
+          "string": [],
+          "collection": [
+            {
+              "operation": "notEmpty",
+              "value1": "={{$json[\"message\"][\"voice\"]}}"
+            }
+          ]
+        }
+      },
+      "id": "IfVoice",
+      "name": "IF: Voice or Text",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [300, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "const fileId = $json[\"message\"][\"voice\"][\"file_id\"];\nreturn [{ json: { file_id: fileId, chat_id: $json[\"message\"][\"chat\"][\"id\"] } }];"
+      },
+      "id": "ExtractVoiceID",
+      "name": "Extract Voice File ID",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [500, 160]
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "get",
+        "fileId": "={{$json[\"file_id\"]}}"
+      },
+      "id": "TelegramGetFile",
+      "name": "Telegram: Get File",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [690, 160],
+      "credentials": {
+        "telegramApi": "YOUR_TELEGRAM_API"
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://api.telegram.org/file/bot{{ $credentials.apiToken }}/{{ $json[\"result\"][\"file_path\"] }}",
+        "responseFormat": "file",
+        "options": {}
+      },
+      "id": "DownloadVoice",
+      "name": "Download Voice File",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [900, 160],
+      "credentials": {
+        "httpBasicAuth": ""
+      }
+    },
+    {
+      "parameters": {
+        "operation": "transcribeAudio",
+        "audio": "={{$binary.data}}"
+      },
+      "id": "WhisperTranscribe",
+      "name": "Transcribe Voice (OpenAI Whisper)",
+      "type": "n8n-nodes-base.openAiWhisper",
+      "typeVersion": 1,
+      "position": [1100, 160],
+      "credentials": {
+        "openAiApi": "YOUR_OPENAI_API"
+      }
+    },
+    {
+      "parameters": {
+        "functionCode": "return [{ json: {\n  text: $json.text,\n  chat_id: $json.chat_id\n} }];"
+      },
+      "id": "VoiceToText",
+      "name": "Get Transcribed Text",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1250, 160]
+    },
+    {
+      "parameters": {
+        "functionCode": "return [{ json: {\n  text: $json[\"message\"][\"text\"] || \"\",\n  chat_id: $json[\"message\"][\"chat\"][\"id\"]\n} }];"
+      },
+      "id": "ExtractText",
+      "name": "Extract Text Message",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [500, 430]
+    },
+    {
+      "parameters": {
+        "mode": "wait",
+        "mergeBy": "passThrough"
+      },
+      "id": "MergeText",
+      "name": "Merge Text Sources",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 1,
+      "position": [1450, 300]
+    },
+    {
+      "parameters": {
+        "modelName": "gpt-3.5-turbo",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are an expense tracking assistant. Extract these fields from a financial message: intent (should be 'add_expense'), amount (number), description, and category. Always respond as clean, valid single-line JSON only (no explanations or markdown). Example response:\n{\"intent\":\"add_expense\",\"amount\":25.50,\"description\":\"Lunch at Cafe\",\"category\":\"Food\"}"
+          },
+          {
+            "role": "user",
+            "content": "{{$json[\"text\"]}}"
+          }
+        ]
+      },
+      "id": "OpenAIExtract",
+      "name": "Analyze: OpenAI (GPT)",
+      "type": "n8n-nodes-base.openAiChat",
+      "typeVersion": 1,
+      "position": [1650, 300],
+      "credentials": {
+        "openAiApi": "YOUR_OPENAI_API"
+      }
+    },
+    {
+      "parameters": {
+        "functionCode": "try {\n  const data = JSON.parse($json.choices[0].message.content);\n  return [{\n    json: {\n      intent: data.intent,\n      amount: data.amount,\n      description: data.description,\n      category: data.category,\n      chat_id: $json.chat_id\n    }\n  }];\n} catch (e) {\n  return [{\n    json: {\n      intent: null,\n      amount: null,\n      description: null,\n      category: null,\n      chat_id: $json.chat_id,\n      error: 'Parsing error or invalid AI response'\n    }\n  }];\n}"
+      },
+      "id": "ParseAIJson",
+      "name": "Parse AI JSON",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1850, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json[\"intent\"]}}",
+              "operation": "equal",
+              "value2": "add_expense"
+            }
+          ],
+          "number": [
+            {
+              "value1": "={{$json[\"amount\"]}}",
+              "operation": "larger",
+              "value2": 0
+            }
+          ]
+        }
+      },
+      "id": "IfAIValid",
+      "name": "IF: AI Output Valid?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [2050, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "sheetId": "YOUR_SHEET_ID",
+        "range": "Sheet1!A:D",
+        "valueInputMode": "USER_ENTERED",
+        "options": {},
+        "inputData": [
+          {
+            "columnName": "Date",
+            "value": "={{$now.toISOString().slice(0,10)}}"
+          },
+          {
+            "columnName": "Amount",
+            "value": "={{$json[\"amount\"]}}"
+          },
+          {
+            "columnName": "Description",
+            "value": "={{$json[\"description\"]}}"
+          },
+          {
+            "columnName": "Category",
+            "value": "={{$json[\"category\"]}}"
+          }
+        ]
+      },
+      "id": "GoogleSheetsAdd",
+      "name": "Log to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [2250, 150],
+      "credentials": {
+        "googleSheetsOAuth2Api": "YOUR_GOOGLE_API"
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json[\"chat_id\"]}}",
+        "text": "Expense of ${{$json[\"amount\"]}} for {{$json[\"description\"]}} in category {{$json[\"category\"]}} logged. ✅",
+        "additionalFields": {}
+      },
+      "id": "SendTelegramOK",
+      "name": "Telegram Confirm",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [2450, 150],
+      "credentials": {
+        "telegramApi": "YOUR_TELEGRAM_API"
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json[\"chat_id\"]}}",
+        "text": "Sorry, I couldn't understand your expense message. Please try rephrasing or provide explicit amount and category. ❓",
+        "additionalFields": {}
+      },
+      "id": "SendTelegramFail",
+      "name": "Telegram Ask Again",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [2300, 460],
+      "credentials": {
+        "telegramApi": "YOUR_TELEGRAM_API"
+      }
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          { "node": "IfVoice", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "IfVoice": {
+      "main": [
+        [
+          { "node": "ExtractVoiceID", "type": "main", "index": 0 }
+        ],
+        [
+          { "node": "ExtractText", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "ExtractVoiceID": {
+      "main": [
+        [
+          { "node": "TelegramGetFile", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "TelegramGetFile": {
+      "main": [
+        [
+          { "node": "DownloadVoice", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "DownloadVoice": {
+      "main": [
+        [
+          { "node": "WhisperTranscribe", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "WhisperTranscribe": {
+      "main": [
+        [
+          { "node": "VoiceToText", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "VoiceToText": {
+      "main": [
+        [
+          { "node": "MergeText", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "ExtractText": {
+      "main": [
+        [
+          { "node": "MergeText", "type": "main", "index": 1 }
+        ]
+      ]
+    },
+    "MergeText": {
+      "main": [
+        [
+          { "node": "OpenAIExtract", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "OpenAIExtract": {
+      "main": [
+        [
+          { "node": "ParseAIJson", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "ParseAIJson": {
+      "main": [
+        [
+          { "node": "IfAIValid", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "IfAIValid": {
+      "main": [
+        [
+          { "node": "GoogleSheetsAdd", "type": "main", "index": 0 }
+        ],
+        [
+          { "node": "SendTelegramFail", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "GoogleSheetsAdd": {
+      "main": [
+        [
+          { "node": "SendTelegramOK", "type": "main", "index": 0 }
+        ]
+      ]
+    }
+  }
+}
