@@ -1,0 +1,5 @@
+## A RAG Chatbot trained on SEBI Annual Report 2025
+
+Built using RAG and LangChain and trained on the SEBI Annual report pdf as Proprietary Dataset, you can ask this chatbot anything related to that
+
+Website - https://rag-starter-mvp-kwb6grafqvsk8cpsggzv83.streamlit.app/
