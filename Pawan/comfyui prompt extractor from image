@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pixaroma Prompt Extractor</title>
+  <style>
+    :root { --bg:#0b0e13; --card:#131823; --muted:#8fa0b5; --accent:#5fb2ff; }
+    html,body { height:100%; }
+    body { margin:0; background:linear-gradient(180deg,#0b0e13,#0e1420); color:#e7eefc; font:16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif; }
+    .wrap { max-width:900px; margin:40px auto; padding:0 16px; }
+    .card { background:var(--card); border:1px solid #1b2435; border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,.35); }
+    header { padding:20px 22px; border-bottom:1px solid #1b2435; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+    header h1 { font-size:18px; margin:0; }
+    .drop { margin:16px; padding:28px; border:1.5px dashed #2a3752; border-radius:14px; display:grid; place-items:center; text-align:center; background:#0f1625; cursor:pointer; }
+    .drop.drag { border-color:var(--accent); box-shadow:0 0 0 4px rgba(95,178,255,.12) inset; }
+    .hint { color:var(--muted); font-size:14px; }
+    .row { display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+    .btn { appearance:none; border:1px solid #2b3b56; background:#152038; color:#e7eefc; padding:10px 14px; border-radius:10px; cursor:pointer; font-weight:600; }
+    .btn.primary { background:var(--accent); border-color:#61b6ff; color:#051426; }
+    .btn:disabled { opacity:.6; cursor:not-allowed; }
+    .out { margin:0 16px 16px; display:grid; gap:10px; }
+    textarea { width:100%; min-height:180px; resize:vertical; padding:14px; border-radius:12px; border:1px solid #24324c; background:#0f1625; color:#e7eefc; font:15px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .meta { color:var(--muted); font-size:13px; white-space:pre-wrap; }
+    .ok { color:#76ffa6; }
+    .warn { color:#ffc46b; }
+    .err { color:#ff7b85; }
+    .small { font-size:12px; color:var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <header>
+        <h1>Pixaroma Prompt Extractor</h1>
+        <div class="row">
+          <input id="file" type="file" accept="image/png,image/webp,image/jpeg" hidden />
+          <button class="btn" id="pick">Upload image</button>
+        </div>
+      </header>
+
+      <label id="drop" class="drop" for="file">
+        <div>
+          <div style="font-weight:700; font-size:16px; margin-bottom:6px;">Drop a PNG from Comfy UI or click to upload</div>
+          <div class="hint">Reads prompt from PNG metadata. Works with Comfy UI generated images.</div>
+        </div>
+      </label>
+
+      <div class="out">
+        <textarea id="out" placeholder="The extracted prompt will appear here…" spellcheck="false"></textarea>
+        <div class="row">
+          <button class="btn primary" id="copy" disabled>Copy prompt</button>
+          <span id="status" class="small"></span>
+        </div>
+        <div id="meta" class="meta"></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+const $ = (id)=>document.getElementById(id);
+const drop = $('drop');
+const fileInput = $('file');
+const pickBtn = $('pick');
+const out = $('out');
+const copyBtn = $('copy');
+const metaBox = $('meta');
+const status = $('status');
+
+pickBtn.onclick = () => fileInput.click();
+
+// drag and drop
+['dragenter','dragover'].forEach(evt=>drop.addEventListener(evt,e=>{e.preventDefault(); drop.classList.add('drag');}));
+['dragleave','drop'].forEach(evt=>drop.addEventListener(evt,e=>{e.preventDefault(); drop.classList.remove('drag');}));
+drop.addEventListener('drop', e=>{ const f = e.dataTransfer.files[0]; if (f) readFile(f);});
+fileInput.addEventListener('change', e=>{ const f = e.target.files[0]; if (f) readFile(f);});
+
+function readFile(file){
+  status.textContent = `Reading ${file.name}…`;
+  const fr = new FileReader();
+  fr.onload = () => processBuffer(fr.result, file.name);
+  fr.onerror = () => setError('Failed to read file');
+  fr.readAsArrayBuffer(file);
+}
+
+function setError(msg){ status.textContent = msg; status.className = 'small err'; }
+function setWarn(msg){ status.textContent = msg; status.className = 'small warn'; }
+function setOk(msg){ status.textContent = msg; status.className = 'small ok'; }
+
+function processBuffer(buffer, name){
+  try {
+    const meta = parsePngMetadata(new Uint8Array(buffer));
+    const infoLines = [];
+    let found = false, extracted = '';
+
+    if (meta.prompt) {
+      const p = tryExtractPrompt(meta.prompt);
+      if (p) { extracted = p; found = true; infoLines.push('Found key: prompt'); }
+    }
+    if (!found && meta.workflow) {
+      const p = tryExtractPrompt(meta.workflow);
+      if (p) { extracted = p; found = true; infoLines.push('Found key: workflow'); }
+    }
+    if (!found) {
+      for (const [k,v] of Object.entries(meta)){
+        if (typeof v === 'string'){
+          const p = tryExtractPrompt(v);
+          if (p){ extracted = p; found = true; infoLines.push('Scanned key: '+k); break; }
+        }
+      }
+    }
+
+    if (found){
+      out.value = extracted.trim();
+      copyBtn.disabled = false;
+      setOk('Prompt extracted from '+name);
+    } else {
+      out.value = '';
+      copyBtn.disabled = true;
+      setWarn('Could not find an obvious prompt in metadata.');
+    }
+
+    const keys = Object.keys(meta);
+    if (keys.length){
+      infoLines.push('\nMetadata keys: '+keys.join(', '));
+    } else {
+      infoLines.push('No PNG tEXt/iTXt keys detected. The image may be stripped.');
+    }
+    metaBox.textContent = infoLines.join('\n');
+  } catch (e){
+    console.error(e);
+    setError('Parsing error: '+e.message);
+  }
+}
+
+function parsePngMetadata(bytes){
+  const sig = [137,80,78,71,13,10,26,10];
+  for (let i=0;i<8;i++){ if (bytes[i] !== sig[i]) throw new Error('Not a PNG'); }
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  let p = 8; const out = {};
+  while (p + 8 <= bytes.length){
+    const len = view.getUint32(p); p += 4;
+    const type = String.fromCharCode(bytes[p],bytes[p+1],bytes[p+2],bytes[p+3]); p += 4;
+    if (p + len + 4 > bytes.length) break;
+    if (type === 'tEXt'){
+      const data = bytes.subarray(p, p+len);
+      const nullIdx = data.indexOf(0);
+      const key = new TextDecoder().decode(data.subarray(0, nullIdx));
+      const val = new TextDecoder().decode(data.subarray(nullIdx+1));
+      out[key] = val;
+    } else if (type === 'iTXt'){
+      const data = bytes.subarray(p, p+len);
+      let off = 0;
+      const readZ = () => { const z = data.indexOf(0, off); const s = new TextDecoder().decode(data.subarray(off, z)); off = z+1; return s; };
+      const key = readZ();
+      const compFlag = data[off]; off++;
+      const compMethod = data[off]; off++;
+      const lang = readZ();
+      const transKey = readZ();
+      let textBytes = data.subarray(off);
+      if (compFlag === 1){
+        out[key] = '[compressed iTXt not supported inline]';
+      } else {
+        out[key] = new TextDecoder().decode(textBytes);
+      }
+    }
+    p += len;
+    p += 4;
+    if (type === 'IEND') break;
+  }
+  return out;
+}
+
+function tryExtractPrompt(jsonMaybe){
+  const looksPlain = typeof jsonMaybe === 'string' && jsonMaybe.length > 40 && jsonMaybe.includes(',');
+  if (looksPlain) {
+    try { JSON.parse(jsonMaybe); } catch { return jsonMaybe; }
+  }
+  try {
+    const data = JSON.parse(jsonMaybe);
+    const strings = [];
+    (function walk(v){
+      if (v == null) return;
+      if (typeof v === 'string') strings.push(v);
+      else if (Array.isArray(v)) v.forEach(walk);
+      else if (typeof v === 'object') Object.values(v).forEach(walk);
+    })(data);
+
+    const ranked = strings.map(s=>({
+      s,
+      score: (
+        (s.length) +
+        (s.split(',').length-1)*40 +
+        (s.match(/\bphoto|portrait|lighting|lens|color|cinematic|realistic|style|grade|bokeh|depth\b/gi)?.length||0)*30 -
+        (/[{}\[\]\":]/.test(s)?80:0)
+      )
+    }))
+    .sort((a,b)=>b.score-a.score);
+
+    return ranked.length ? ranked[0].s : '';
+  } catch {
+    return '';
+  }
+}
+
+copyBtn.addEventListener('click', async ()=>{
+  if (!out.value) return;
+  try { await navigator.clipboard.writeText(out.value); setOk('Copied to clipboard'); }
+  catch { setError('Clipboard blocked by browser'); }
+});
+</script>
+</body>
+</html>
