@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Pixaroma Prompt Extractor</title>
+  <title> Prompt Extractor</title>
   <style>
     :root { --bg:#0b0e13; --card:#131823; --muted:#8fa0b5; --accent:#5fb2ff; }
     html,body { height:100%; }
